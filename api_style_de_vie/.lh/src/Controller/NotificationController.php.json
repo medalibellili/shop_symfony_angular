@@ -1,0 +1,82 @@
+{
+    "sourceFile": "src/Controller/NotificationController.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 16,
+            "patches": [
+                {
+                    "date": 1694684305702,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1694684314416,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n     }\n \n \n      /**\n-     * @Route(\"/api/biography\", name=\"app_create_biography\", methods={\"POST\"})\n+     * @Route(\"/api/notification\", name=\"app_create_biography\", methods={\"POST\"})\n      */\n     public function create(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response\n {\n     try {\n"
+                },
+                {
+                    "date": 1694684321592,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n     }\n \n \n      /**\n-     * @Route(\"/api/notification\", name=\"app_create_biography\", methods={\"POST\"})\n+     * @Route(\"/api/notification\", name=\"app_create_notification\", methods={\"POST\"})\n      */\n     public function create(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response\n {\n     try {\n"
+                },
+                {
+                    "date": 1694684333866,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,9 @@\n     try {\n         $em->beginTransaction();\n \n         // Deserialize the object\n-        $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n+        $object = $serializer->deserialize($request->getContent(), Notification::class, 'json');\n         \n         // Persist the object\n         $em->persist($object);\n         $em->flush();\n"
+                },
+                {
+                    "date": 1694684358095,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,9 @@\n \n use Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController;\n use Symfony\\Component\\HttpFoundation\\Response;\n use Symfony\\Component\\Routing\\Annotation\\Route;\n+use App\\Entity\\Biography;\n \n class NotificationController extends AbstractController\n {\n     /**\n"
+                },
+                {
+                    "date": 1694684366883,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n \n use Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController;\n use Symfony\\Component\\HttpFoundation\\Response;\n use Symfony\\Component\\Routing\\Annotation\\Route;\n-use App\\Entity\\Biography;\n+use App\\Entity\\Notification;\n \n class NotificationController extends AbstractController\n {\n     /**\n"
+                },
+                {
+                    "date": 1694684381547,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -47,9 +47,9 @@\n     }\n }\n \n     /**\n-     * @Route(\"/api/biographies\", name=\"app_get_all_biography\", methods={\"GET\"})\n+     * @Route(\"/api/notifications\", name=\"app_get_all_biography\", methods={\"GET\"})\n      */\n     public function getAllBiographies(Request $request, EntityManagerInterface $em): Response\n     {\n         $find = $em->getRepository(Biography::class)->findAll();\n"
+                },
+                {
+                    "date": 1694684390251,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -47,9 +47,9 @@\n     }\n }\n \n     /**\n-     * @Route(\"/api/notifications\", name=\"app_get_all_biography\", methods={\"GET\"})\n+     * @Route(\"/api/notifications\", name=\"app_get_all_notification\", methods={\"GET\"})\n      */\n     public function getAllBiographies(Request $request, EntityManagerInterface $em): Response\n     {\n         $find = $em->getRepository(Biography::class)->findAll();\n"
+                },
+                {
+                    "date": 1694684398564,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -51,8 +51,8 @@\n      * @Route(\"/api/notifications\", name=\"app_get_all_notification\", methods={\"GET\"})\n      */\n     public function getAllBiographies(Request $request, EntityManagerInterface $em): Response\n     {\n-        $find = $em->getRepository(Biography::class)->findAll();\n+        $find = $em->getRepository(Notification::class)->findAll();\n         return $this->json($find,200);\n     }\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1694684404157,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,9 +49,9 @@\n \n     /**\n      * @Route(\"/api/notifications\", name=\"app_get_all_notification\", methods={\"GET\"})\n      */\n-    public function getAllBiographies(Request $request, EntityManagerInterface $em): Response\n+    public function getAllNotifications(Request $request, EntityManagerInterface $em): Response\n     {\n         $find = $em->getRepository(Notification::class)->findAll();\n         return $this->json($find,200);\n     }\n"
+                },
+                {
+                    "date": 1694684870858,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,9 @@\n use Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController;\n use Symfony\\Component\\HttpFoundation\\Response;\n use Symfony\\Component\\Routing\\Annotation\\Route;\n use App\\Entity\\Notification;\n+use Symfony\\Component\\HttpFoundation\\Request;\n \n class NotificationController extends AbstractController\n {\n     /**\n"
+                },
+                {
+                    "date": 1694684890212,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,8 +6,9 @@\n use Symfony\\Component\\HttpFoundation\\Response;\n use Symfony\\Component\\Routing\\Annotation\\Route;\n use App\\Entity\\Notification;\n use Symfony\\Component\\HttpFoundation\\Request;\n+use Doctrine\\ORM\\EntityManagerInterface;\n \n class NotificationController extends AbstractController\n {\n     /**\n"
+                },
+                {
+                    "date": 1694685531378,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -54,7 +54,7 @@\n      */\n     public function getAllNotifications(Request $request, EntityManagerInterface $em): Response\n     {\n         $find = $em->getRepository(Notification::class)->findAll();\n-        return $this->json($find,200);\n+        return $this->json($find,, 200, [], ['groups' => 'read:biography']);\n     }\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1694685560839,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -54,7 +54,7 @@\n      */\n     public function getAllNotifications(Request $request, EntityManagerInterface $em): Response\n     {\n         $find = $em->getRepository(Notification::class)->findAll();\n-        return $this->json($find,, 200, [], ['groups' => 'read:biography']);\n+        return $this->json($find, 200, [], ['groups' => 'read:notification']);\n     }\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1694685684055,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-<?php\n+<!-- <?php\n \n namespace App\\Controller;\n \n use Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController;\n@@ -56,5 +56,5 @@\n     {\n         $find = $em->getRepository(Notification::class)->findAll();\n         return $this->json($find, 200, [], ['groups' => 'read:notification']);\n     }\n-}\n\\ No newline at end of file\n+} -->\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1694685690189,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,60 +0,0 @@\n-<?php\n-\n-namespace App\\Controller;\n-\n-use Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController;\n-use Symfony\\Component\\HttpFoundation\\Response;\n-use Symfony\\Component\\Routing\\Annotation\\Route;\n-use App\\Entity\\Notification;\n-use Symfony\\Component\\HttpFoundation\\Request;\n-use Doctrine\\ORM\\EntityManagerInterface;\n-\n-class NotificationController extends AbstractController\n-{\n-    /**\n-     * @Route(\"/notification\", name=\"app_notification\")\n-     */\n-    public function index(): Response\n-    {\n-        return $this->render('notification/index.html.twig', [\n-            'controller_name' => 'NotificationController',\n-        ]);\n-    }\n-\n-\n-     /**\n-     * @Route(\"/api/notification\", name=\"app_create_notification\", methods={\"POST\"})\n-     */\n-    public function create(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response\n-{\n-    try {\n-        $em->beginTransaction();\n-\n-        // Deserialize the object\n-        $object = $serializer->deserialize($request->getContent(), Notification::class, 'json');\n-        \n-        // Persist the object\n-        $em->persist($object);\n-        $em->flush();\n-        \n-        // Commit the transaction\n-        $em->commit();\n-\n-        return $this->json(\"success\", JsonResponse::HTTP_OK);\n-    } catch (\\Exception $e) {\n-        // Rollback the transaction in case of an exception\n-        $em->rollback();\n-\n-        return $this->json(['error' => $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);\n-    }\n-}\n-\n-    /**\n-     * @Route(\"/api/notifications\", name=\"app_get_all_notification\", methods={\"GET\"})\n-     */\n-    public function getAllNotifications(Request $request, EntityManagerInterface $em): Response\n-    {\n-        $find = $em->getRepository(Notification::class)->findAll();\n-        return $this->json($find, 200, [], ['groups' => 'read:notification']);\n-    }\n-}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1694685714081,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,60 @@\n+<?php\n+\n+namespace App\\Controller;\n+\n+use Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController;\n+use Symfony\\Component\\HttpFoundation\\Response;\n+use Symfony\\Component\\Routing\\Annotation\\Route;\n+use App\\Entity\\Notification;\n+use Symfony\\Component\\HttpFoundation\\Request;\n+use Doctrine\\ORM\\EntityManagerInterface;\n+\n+class NotificationController extends AbstractController\n+{\n+    /**\n+     * @Route(\"/notification\", name=\"app_notification\")\n+     */\n+    public function index(): Response\n+    {\n+        return $this->render('notification/index.html.twig', [\n+            'controller_name' => 'NotificationController',\n+        ]);\n+    }\n+\n+\n+     /**\n+     * @Route(\"/api/notification\", name=\"app_create_notification\", methods={\"POST\"})\n+     */\n+    public function create(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response\n+{\n+    try {\n+        $em->beginTransaction();\n+\n+        // Deserialize the object\n+        $object = $serializer->deserialize($request->getContent(), Notification::class, 'json');\n+        \n+        // Persist the object\n+        $em->persist($object);\n+        $em->flush();\n+        \n+        // Commit the transaction\n+        $em->commit();\n+\n+        return $this->json(\"success\", JsonResponse::HTTP_OK);\n+    } catch (\\Exception $e) {\n+        // Rollback the transaction in case of an exception\n+        $em->rollback();\n+\n+        return $this->json(['error' => $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);\n+    }\n+}\n+\n+    /**\n+     * @Route(\"/api/notifications\", name=\"app_get_all_notification\", methods={\"GET\"})\n+     */\n+    public function getAllNotifications(Request $request, EntityManagerInterface $em): Response\n+    {\n+        $find = $em->getRepository(Notification::class)->findAll();\n+        return $this->json($find, 200, [], ['groups' => 'read:notification']);\n+    }\n+}\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1694684305702,
+            "name": "Commit-0",
+            "content": "<?php\n\nnamespace App\\Controller;\n\nuse Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController;\nuse Symfony\\Component\\HttpFoundation\\Response;\nuse Symfony\\Component\\Routing\\Annotation\\Route;\n\nclass NotificationController extends AbstractController\n{\n    /**\n     * @Route(\"/notification\", name=\"app_notification\")\n     */\n    public function index(): Response\n    {\n        return $this->render('notification/index.html.twig', [\n            'controller_name' => 'NotificationController',\n        ]);\n    }\n\n\n     /**\n     * @Route(\"/api/biography\", name=\"app_create_biography\", methods={\"POST\"})\n     */\n    public function create(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response\n{\n    try {\n        $em->beginTransaction();\n\n        // Deserialize the object\n        $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n        \n        // Persist the object\n        $em->persist($object);\n        $em->flush();\n        \n        // Commit the transaction\n        $em->commit();\n\n        return $this->json(\"success\", JsonResponse::HTTP_OK);\n    } catch (\\Exception $e) {\n        // Rollback the transaction in case of an exception\n        $em->rollback();\n\n        return $this->json(['error' => $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);\n    }\n}\n\n    /**\n     * @Route(\"/api/biographies\", name=\"app_get_all_biography\", methods={\"GET\"})\n     */\n    public function getAllBiographies(Request $request, EntityManagerInterface $em): Response\n    {\n        $find = $em->getRepository(Biography::class)->findAll();\n        return $this->json($find,200);\n    }\n}"
+        }
+    ]
+}

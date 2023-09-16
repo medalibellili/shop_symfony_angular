@@ -1,0 +1,150 @@
+{
+    "sourceFile": "src/Entity/Biography.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 33,
+            "patches": [
+                {
+                    "date": 1692268492531,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1692268524254,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,15 +14,15 @@\n {\n     /**\n      * @ORM\\Id\n      * @ORM\\GeneratedValue\n-     * @ORM\\Column(type=\"integer\", nullable)\n+     * @ORM\\Column(type=\"integer\", nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $id;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $name;\n \n"
+                },
+                {
+                    "date": 1692268530779,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,21 +26,21 @@\n      */\n     private $name;\n \n     /**\n-     * @ORM\\Column(type=\"text\")\n+     * @ORM\\Column(type=\"text\", nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $description;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $image;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $links;\n \n"
+                },
+                {
+                    "date": 1692268539450,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,9 +49,9 @@\n      */\n     private $user;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkFacebook;\n \n"
+                },
+                {
+                    "date": 1692268545705,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -55,9 +55,9 @@\n      */\n     private $linkFacebook;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkTiktok;\n \n"
+                },
+                {
+                    "date": 1692268555667,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -61,21 +61,21 @@\n      */\n     private $linkTiktok;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkInstagram;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true\n      * @Groups({\"read:biography\"})\n      */\n     private $linkLinkedin;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkTwiter;\n \n"
+                },
+                {
+                    "date": 1692268570583,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -67,9 +67,9 @@\n      */\n     private $linkInstagram;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=true\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkLinkedin;\n \n"
+                },
+                {
+                    "date": 1692268590425,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,8 +44,9 @@\n      */\n     private $links;\n \n     /**\n+     * \n      * @ORM\\OneToOne(targetEntity=User::class, cascade={\"persist\", \"remove\"})\n      */\n     private $user;\n \n"
+                },
+                {
+                    "date": 1692268598355,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,9 +44,9 @@\n      */\n     private $links;\n \n     /**\n-     * \n+     * @ORM\\Column\n      * @ORM\\OneToOne(targetEntity=User::class, cascade={\"persist\", \"remove\"})\n      */\n     private $user;\n \n"
+                },
+                {
+                    "date": 1692268606043,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,9 +44,9 @@\n      */\n     private $links;\n \n     /**\n-     * @ORM\\Column\n+     * @ORM\\Column(nullable=true)\n      * @ORM\\OneToOne(targetEntity=User::class, cascade={\"persist\", \"remove\"})\n      */\n     private $user;\n \n"
+                },
+                {
+                    "date": 1692268631761,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,69 +14,68 @@\n {\n     /**\n      * @ORM\\Id\n      * @ORM\\GeneratedValue\n-     * @ORM\\Column(type=\"integer\", nullable=true)\n+     * @ORM\\Column(type=\"integer\")\n      * @Groups({\"read:biography\"})\n      */\n     private $id;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n+     * @ORM\\Column(type=\"string\", length=255)\n      * @Groups({\"read:biography\"})\n      */\n     private $name;\n \n     /**\n-     * @ORM\\Column(type=\"text\", nullable=true)\n+     * @ORM\\Column(type=\"text\")\n      * @Groups({\"read:biography\"})\n      */\n     private $description;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n+     * @ORM\\Column(type=\"string\", length=255)\n      * @Groups({\"read:biography\"})\n      */\n     private $image;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n+     * @ORM\\Column(type=\"string\", length=255)\n      * @Groups({\"read:biography\"})\n      */\n     private $links;\n \n     /**\n-     * @ORM\\Column(nullable=true)\n      * @ORM\\OneToOne(targetEntity=User::class, cascade={\"persist\", \"remove\"})\n      */\n     private $user;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n+     * @ORM\\Column(type=\"string\", length=255)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkFacebook;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n+     * @ORM\\Column(type=\"string\", length=255)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkTiktok;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n+     * @ORM\\Column(type=\"string\", length=255)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkInstagram;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n+     * @ORM\\Column(type=\"string\", length=255)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkLinkedin;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n+     * @ORM\\Column(type=\"string\", length=255)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkTwiter;\n \n"
+                },
+                {
+                    "date": 1692272829712,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -83,8 +83,15 @@\n     {\n         return $this->id;\n     }\n \n+    public function setName(string $name): self\n+    {\n+        $this->name = $name;\n+\n+        return $this;\n+    }\n+\n     public function getName(): ?string\n     {\n         return $this->name;\n     }\n"
+                },
+                {
+                    "date": 1692272837610,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -83,9 +83,9 @@\n     {\n         return $this->id;\n     }\n \n-    public function setName(string $name): self\n+    public function setId(int $name): self\n     {\n         $this->name = $name;\n \n         return $this;\n"
+                },
+                {
+                    "date": 1692272844881,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -83,11 +83,11 @@\n     {\n         return $this->id;\n     }\n \n-    public function setId(int $name): self\n+    public function setId(?int $name): self\n     {\n-        $this->name = $name;\n+        $this->id = $name;\n \n         return $this;\n     }\n \n"
+                },
+                {
+                    "date": 1692345060079,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -83,11 +83,11 @@\n     {\n         return $this->id;\n     }\n \n-    public function setId(?int $name): self\n+    public function setId(?int $id): self\n     {\n-        $this->id = $name;\n+        $this->id = $id;\n \n         return $this;\n     }\n \n"
+                },
+                {
+                    "date": 1692347662664,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,9 +38,9 @@\n      */\n     private $image;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $links;\n \n"
+                },
+                {
+                    "date": 1692347780899,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -131,9 +131,9 @@\n     {\n         return $this->links;\n     }\n \n-    public function setLinks(string $links): self\n+    public function setLinks(?string $links): self\n     {\n         $this->links = $links;\n \n         return $this;\n"
+                },
+                {
+                    "date": 1692350013628,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,9 +20,9 @@\n      */\n     private $id;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $name;\n \n"
+                },
+                {
+                    "date": 1692350019140,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,9 +26,9 @@\n      */\n     private $name;\n \n     /**\n-     * @ORM\\Column(type=\"text\")\n+     * @ORM\\Column(type=\"text\", nullable=tru)\n      * @Groups({\"read:biography\"})\n      */\n     private $description;\n \n"
+                },
+                {
+                    "date": 1692350032547,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,9 @@\n      */\n     private $description;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=tru)\n      * @Groups({\"read:biography\"})\n      */\n     private $image;\n \n@@ -49,9 +49,9 @@\n      */\n     private $user;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=tru)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkFacebook;\n \n"
+                },
+                {
+                    "date": 1692350040372,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,15 +49,15 @@\n      */\n     private $user;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=tru)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkFacebook;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=tru)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkTiktok;\n \n"
+                },
+                {
+                    "date": 1692350046015,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,15 +26,15 @@\n      */\n     private $name;\n \n     /**\n-     * @ORM\\Column(type=\"text\", nullable=tru)\n+     * @ORM\\Column(type=\"text\", nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $description;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=tru)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $image;\n \n@@ -55,9 +55,9 @@\n      */\n     private $linkFacebook;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=tru)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkTiktok;\n \n"
+                },
+                {
+                    "date": 1692350067208,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -61,9 +61,9 @@\n      */\n     private $linkTiktok;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkInstagram;\n \n"
+                },
+                {
+                    "date": 1692350072742,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -67,15 +67,15 @@\n      */\n     private $linkInstagram;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkLinkedin;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255)\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @Groups({\"read:biography\"})\n      */\n     private $linkTwiter;\n \n"
+                },
+                {
+                    "date": 1692350080606,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,8 +45,9 @@\n     private $links;\n \n     /**\n      * @ORM\\OneToOne(targetEntity=User::class, cascade={\"persist\", \"remove\"})\n+     * \n      */\n     private $user;\n \n     /**\n"
+                },
+                {
+                    "date": 1692350087781,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,9 +45,8 @@\n     private $links;\n \n     /**\n      * @ORM\\OneToOne(targetEntity=User::class, cascade={\"persist\", \"remove\"})\n-     * \n      */\n     private $user;\n \n     /**\n"
+                },
+                {
+                    "date": 1692350100049,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -95,9 +95,9 @@\n     {\n         return $this->name;\n     }\n \n-    public function setName(string $name): self\n+    public function setName(?string $name): self\n     {\n         $this->name = $name;\n \n         return $this;\n"
+                },
+                {
+                    "date": 1692350111286,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -107,9 +107,9 @@\n     {\n         return $this->description;\n     }\n \n-    public function setDescription(string $description): self\n+    public function setDescription(?string $description): self\n     {\n         $this->description = $description;\n \n         return $this;\n"
+                },
+                {
+                    "date": 1692350126435,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -119,9 +119,9 @@\n     {\n         return $this->image;\n     }\n \n-    public function setImage(string $image): self\n+    public function setImage(?string $image): self\n     {\n         $this->image = $image;\n \n         return $this;\n@@ -155,9 +155,9 @@\n     {\n         return $this->linkFacebook;\n     }\n \n-    public function setLinkFacebook(string $linkFacebook): self\n+    public function setLinkFacebook(?string $linkFacebook): self\n     {\n         $this->linkFacebook = $linkFacebook;\n \n         return $this;\n"
+                },
+                {
+                    "date": 1692350131989,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -167,9 +167,9 @@\n     {\n         return $this->linkTiktok;\n     }\n \n-    public function setLinkTiktok(string $linkTiktok): self\n+    public function setLinkTiktok(?string $linkTiktok): self\n     {\n         $this->linkTiktok = $linkTiktok;\n \n         return $this;\n@@ -179,9 +179,9 @@\n     {\n         return $this->linkInstagram;\n     }\n \n-    public function setLinkInstagram(string $linkInstagram): self\n+    public function setLinkInstagram(?string $linkInstagram): self\n     {\n         $this->linkInstagram = $linkInstagram;\n \n         return $this;\n"
+                },
+                {
+                    "date": 1692350137613,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -191,9 +191,9 @@\n     {\n         return $this->linkLinkedin;\n     }\n \n-    public function setLinkLinkedin(string $linkLinkedin): self\n+    public function setLinkLinkedin(?string $linkLinkedin): self\n     {\n         $this->linkLinkedin = $linkLinkedin;\n \n         return $this;\n@@ -203,9 +203,9 @@\n     {\n         return $this->linkTwiter;\n     }\n \n-    public function setLinkTwiter(string $linkTwiter): self\n+    public function setLinkTwiter(?string $linkTwiter): self\n     {\n         $this->linkTwiter = $linkTwiter;\n \n         return $this;\n"
+                },
+                {
+                    "date": 1692777910713,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,8 +44,9 @@\n      */\n     private $links;\n \n     /**\n+     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n      * @ORM\\OneToOne(targetEntity=User::class, cascade={\"persist\", \"remove\"})\n      */\n     private $user;\n \n"
+                },
+                {
+                    "date": 1692778048445,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,9 +44,9 @@\n      */\n     private $links;\n \n     /**\n-     * @ORM\\Column(type=\"string\", length=255, nullable=true)\n+     * @ORM\\Column( nullable=true)\n      * @ORM\\OneToOne(targetEntity=User::class, cascade={\"persist\", \"remove\"})\n      */\n     private $user;\n \n"
+                },
+                {
+                    "date": 1692778243074,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,9 +44,8 @@\n      */\n     private $links;\n \n     /**\n-     * @ORM\\Column( nullable=true)\n      * @ORM\\OneToOne(targetEntity=User::class, cascade={\"persist\", \"remove\"})\n      */\n     private $user;\n \n"
+                }
+            ],
+            "date": 1692268492531,
+            "name": "Commit-0",
+            "content": "<?php\n\nnamespace App\\Entity;\n\nuse App\\Repository\\BiographyRepository;\nuse Doctrine\\ORM\\Mapping as ORM;\nuse Symfony\\Component\\Serializer\\Annotation\\Groups;\n\n\n/**\n * @ORM\\Entity(repositoryClass=BiographyRepository::class)\n */\nclass Biography\n{\n    /**\n     * @ORM\\Id\n     * @ORM\\GeneratedValue\n     * @ORM\\Column(type=\"integer\", nullable)\n     * @Groups({\"read:biography\"})\n     */\n    private $id;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     * @Groups({\"read:biography\"})\n     */\n    private $name;\n\n    /**\n     * @ORM\\Column(type=\"text\")\n     * @Groups({\"read:biography\"})\n     */\n    private $description;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     * @Groups({\"read:biography\"})\n     */\n    private $image;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     * @Groups({\"read:biography\"})\n     */\n    private $links;\n\n    /**\n     * @ORM\\OneToOne(targetEntity=User::class, cascade={\"persist\", \"remove\"})\n     */\n    private $user;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     * @Groups({\"read:biography\"})\n     */\n    private $linkFacebook;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     * @Groups({\"read:biography\"})\n     */\n    private $linkTiktok;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     * @Groups({\"read:biography\"})\n     */\n    private $linkInstagram;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     * @Groups({\"read:biography\"})\n     */\n    private $linkLinkedin;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     * @Groups({\"read:biography\"})\n     */\n    private $linkTwiter;\n\n    public function getId(): ?int\n    {\n        return $this->id;\n    }\n\n    public function getName(): ?string\n    {\n        return $this->name;\n    }\n\n    public function setName(string $name): self\n    {\n        $this->name = $name;\n\n        return $this;\n    }\n\n    public function getDescription(): ?string\n    {\n        return $this->description;\n    }\n\n    public function setDescription(string $description): self\n    {\n        $this->description = $description;\n\n        return $this;\n    }\n\n    public function getImage(): ?string\n    {\n        return $this->image;\n    }\n\n    public function setImage(string $image): self\n    {\n        $this->image = $image;\n\n        return $this;\n    }\n\n    public function getLinks(): ?string\n    {\n        return $this->links;\n    }\n\n    public function setLinks(string $links): self\n    {\n        $this->links = $links;\n\n        return $this;\n    }\n\n    public function getUser(): ?User\n    {\n        return $this->user;\n    }\n\n    public function setUser(?User $user): self\n    {\n        $this->user = $user;\n\n        return $this;\n    }\n\n    public function getLinkFacebook(): ?string\n    {\n        return $this->linkFacebook;\n    }\n\n    public function setLinkFacebook(string $linkFacebook): self\n    {\n        $this->linkFacebook = $linkFacebook;\n\n        return $this;\n    }\n\n    public function getLinkTiktok(): ?string\n    {\n        return $this->linkTiktok;\n    }\n\n    public function setLinkTiktok(string $linkTiktok): self\n    {\n        $this->linkTiktok = $linkTiktok;\n\n        return $this;\n    }\n\n    public function getLinkInstagram(): ?string\n    {\n        return $this->linkInstagram;\n    }\n\n    public function setLinkInstagram(string $linkInstagram): self\n    {\n        $this->linkInstagram = $linkInstagram;\n\n        return $this;\n    }\n\n    public function getLinkLinkedin(): ?string\n    {\n        return $this->linkLinkedin;\n    }\n\n    public function setLinkLinkedin(string $linkLinkedin): self\n    {\n        $this->linkLinkedin = $linkLinkedin;\n\n        return $this;\n    }\n\n    public function getLinkTwiter(): ?string\n    {\n        return $this->linkTwiter;\n    }\n\n    public function setLinkTwiter(string $linkTwiter): self\n    {\n        $this->linkTwiter = $linkTwiter;\n\n        return $this;\n    }\n}"
+        }
+    ]
+}

@@ -1,0 +1,36 @@
+<?php //App%255CEntity%255CNotification%2524user
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\JoinColumn'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinColumn')),
+        clone ($p['Doctrine\\ORM\\Mapping\\OneToOne'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\OneToOne')),
+        clone ($p['Symfony\\Component\\Serializer\\Annotation\\Groups'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Serializer\\Annotation\\Groups')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'targetEntity' => [
+                1 => 'App\\Entity\\User',
+            ],
+            'cascade' => [
+                1 => [
+                    'persist',
+                    'remove',
+                ],
+            ],
+        ],
+        'Symfony\\Component\\Serializer\\Annotation\\Groups' => [
+            'groups' => [
+                2 => [
+                    'read:notification',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

@@ -1,0 +1,202 @@
+{
+    "sourceFile": "src/Controller/BiographyController.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 46,
+            "patches": [
+                {
+                    "date": 1692175807667,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1692175898197,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -48,17 +48,17 @@\n         $find = $em->getRepository(Biography::class)->findAll();\n         return $this->json($find,200);\n     }\n \n-    /**\n+/**\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n-    $biography = $em->getRepository(Biography::class)->find($id); // Utilisez find() au lieu de findOneBy()\n-    \n+    $biography = $em->getRepository(Biography::class)->find($id);\n+\n     if (!$biography) {\n-        throw $this->createNotFoundException('Biography not found');\n+        return $this->json(['message' => 'Biography not found'], 404);\n     }\n \n     $biography2 = $serializer->deserialize($request->getContent(), \n             Biography::class, \n"
+                },
+                {
+                    "date": 1692268411105,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -48,29 +48,23 @@\n         $find = $em->getRepository(Biography::class)->findAll();\n         return $this->json($find,200);\n     }\n \n-/**\n+    /**\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n-    $biography = $em->getRepository(Biography::class)->find($id);\n+    $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n-    if (!$biography) {\n-        return $this->json(['message' => 'Biography not found'], 404);\n-    }\n+    // Deserialize the request content and merge changes into the existing entity\n+    $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n+        AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n+    ]);\n \n-    $biography2 = $serializer->deserialize($request->getContent(), \n-            Biography::class, \n-            'json',\n-            [\n-                'object_to_populate' => $biography\n-            ] \n-            );\n+    $em->flush();\n \n-    $em->flush();\n-    return $this->json($biography2, 200, [], ['groups' => 'read:biography']);\n+    return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n \n     /**\n      * @Route(\"/api/biography/{id}\", name=\"app_get_biography\", methods={\"GET\"})\n"
+                },
+                {
+                    "date": 1692273328137,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,8 +32,10 @@\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n+        $serializer->normalize($biography, null, ['attributes' => ['id']]);\n+\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n         $em->persist($object);\n         $em-> flush();\n"
+                },
+                {
+                    "date": 1692273340295,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,9 +31,9 @@\n     public function create(Request $request ,EntityManagerInterface $em ,SerializerInterface $serializer): Response\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n-        $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n+        //$object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n         $serializer->normalize($biography, null, ['attributes' => ['id']]);\n \n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n"
+                },
+                {
+                    "date": 1692273379041,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,9 @@\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n         //$object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n-        $serializer->normalize($biography, null, ['attributes' => ['id']]);\n+        $object=$serializer->normalize($$request->getContent(), null, ['attributes' => ['id']]);\n \n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n         $em->persist($object);\n"
+                },
+                {
+                    "date": 1692273400643,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,9 @@\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n         //$object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n-        $object=$serializer->normalize($$request->getContent(), null, ['attributes' => ['id']]);\n+        $object=$serializer->deser($request->getContent(), null, ['attributes' => ['id']]);\n \n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n         $em->persist($object);\n"
+                },
+                {
+                    "date": 1692273444378,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,9 @@\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n         //$object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n-        $object=$serializer->deser($request->getContent(), null, ['attributes' => ['id']]);\n+        $object=$serializer->deserialize($request->getContent());\n \n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n         $em->persist($object);\n"
+                },
+                {
+                    "date": 1692273468831,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,11 +31,10 @@\n     public function create(Request $request ,EntityManagerInterface $em ,SerializerInterface $serializer): Response\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n-        //$object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n-        $object=$serializer->deserialize($request->getContent());\n-\n+        $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n+        \n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n         $em->persist($object);\n         $em-> flush();\n"
+                },
+                {
+                    "date": 1692345199427,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,9 @@\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n-        \n+        dd()\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n         $em->persist($object);\n         $em-> flush();\n"
+                },
+                {
+                    "date": 1692345206754,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,9 @@\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n-        dd()\n+        dd($object);\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n         $em->persist($object);\n         $em-> flush();\n"
+                },
+                {
+                    "date": 1692345307782,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,8 @@\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n-        dd($object);\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n         $em->persist($object);\n         $em-> flush();\n"
+                },
+                {
+                    "date": 1692345322254,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,8 +31,10 @@\n     public function create(Request $request ,EntityManagerInterface $em ,SerializerInterface $serializer): Response\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n+        dd($request->getContent());\n+\n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n         $em->persist($object);\n"
+                },
+                {
+                    "date": 1692345508668,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,8 +36,9 @@\n \n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n+        \n         $em->persist($object);\n         $em-> flush();\n         return $this->json(\"success\", JsonResponse::HTTP_OK);\n     }\n"
+                },
+                {
+                    "date": 1692345515925,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,9 +36,9 @@\n \n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n-        \n+        $object-\n         $em->persist($object);\n         $em-> flush();\n         return $this->json(\"success\", JsonResponse::HTTP_OK);\n     }\n"
+                },
+                {
+                    "date": 1692345522305,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,9 +36,9 @@\n \n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n-        $object-\n+        $object=$this->se\n         $em->persist($object);\n         $em-> flush();\n         return $this->json(\"success\", JsonResponse::HTTP_OK);\n     }\n"
+                },
+                {
+                    "date": 1692345528339,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,9 +36,9 @@\n \n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n-        $object=$this->se\n+        $object=$this->setId()\n         $em->persist($object);\n         $em-> flush();\n         return $this->json(\"success\", JsonResponse::HTTP_OK);\n     }\n"
+                },
+                {
+                    "date": 1692345551557,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,9 +36,9 @@\n \n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n-        $object=$this->setId()\n+        $object=$this->setId(1);\n         $em->persist($object);\n         $em-> flush();\n         return $this->json(\"success\", JsonResponse::HTTP_OK);\n     }\n"
+                },
+                {
+                    "date": 1692345559625,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,10 +36,9 @@\n \n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n-        $object=$this->setId(1);\n-        $em->persist($object);\n+         $em->persist($object);\n         $em-> flush();\n         return $this->json(\"success\", JsonResponse::HTTP_OK);\n     }\n \n"
+                },
+                {
+                    "date": 1692345565280,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,9 +31,9 @@\n     public function create(Request $request ,EntityManagerInterface $em ,SerializerInterface $serializer): Response\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n-        dd($request->getContent());\n+        dd($request);\n \n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n"
+                },
+                {
+                    "date": 1692347310955,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,10 +31,9 @@\n     public function create(Request $request ,EntityManagerInterface $em ,SerializerInterface $serializer): Response\n     {\n \n         // Désérialiser l'objet Entreprise à partir des données JSON\n-        dd($request);\n-\n+ \n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n         //$object->setStatus(false);\n         // Persister l'objet Entreprise et les utilisateurs\n          $em->persist($object);\n"
+                },
+                {
+                    "date": 1692347960681,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,20 +27,31 @@\n \n      /**\n      * @Route(\"/api/biography\", name=\"app_create_biography\", methods={\"POST\"})\n      */\n-    public function create(Request $request ,EntityManagerInterface $em ,SerializerInterface $serializer): Response\n-    {\n+    public function create(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response\n+{\n+    try {\n+        $em->beginTransaction();\n \n-        // Désérialiser l'objet Entreprise à partir des données JSON\n- \n+        // Deserialize the object\n         $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n-        //$object->setStatus(false);\n-        // Persister l'objet Entreprise et les utilisateurs\n-         $em->persist($object);\n-        $em-> flush();\n+        \n+        // Persist the object\n+        $em->persist($object);\n+        $em->flush();\n+        \n+        // Commit the transaction\n+        $em->commit();\n+\n         return $this->json(\"success\", JsonResponse::HTTP_OK);\n+    } catch (\\Exception $e) {\n+        // Rollback the transaction in case of an exception\n+        $em->rollback();\n+\n+        return $this->json(['error' => $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);\n     }\n+}\n \n     /**\n      * @Route(\"/api/biographies\", name=\"app_get_all_biography\", methods={\"GET\"})\n      */\n"
+                },
+                {
+                    "date": 1692348124164,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -60,23 +60,26 @@\n         $find = $em->getRepository(Biography::class)->findAll();\n         return $this->json($find,200);\n     }\n \n-    /**\n+/**\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n-    $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n+    $biography = $em->getRepository(Biography::class)->find($id);\n \n-    // Deserialize the request content and merge changes into the existing entity\n-    $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n+    if (!$biography) {\n+        return $this->json(['error' => 'Biography not found'], Response::HTTP_NOT_FOUND);\n+    }\n+\n+    $deserializedBiography = $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n         AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     ]);\n \n     $em->flush();\n \n-    return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n+    return $this->json($deserializedBiography, Response::HTTP_OK, [], ['groups' => 'read:biography']);\n }\n \n     /**\n      * @Route(\"/api/biography/{id}\", name=\"app_get_biography\", methods={\"GET\"})\n"
+                },
+                {
+                    "date": 1692348254633,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -65,8 +65,9 @@\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n+    dump\n     $biography = $em->getRepository(Biography::class)->find($id);\n \n     if (!$biography) {\n         return $this->json(['error' => 'Biography not found'], Response::HTTP_NOT_FOUND);\n"
+                },
+                {
+                    "date": 1692348261155,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -65,9 +65,9 @@\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n-    dump\n+    dump($id);\n     $biography = $em->getRepository(Biography::class)->find($id);\n \n     if (!$biography) {\n         return $this->json(['error' => 'Biography not found'], Response::HTTP_NOT_FOUND);\n"
+                },
+                {
+                    "date": 1692348357786,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -60,27 +60,23 @@\n         $find = $em->getRepository(Biography::class)->findAll();\n         return $this->json($find,200);\n     }\n \n-/**\n+    /**\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n-    dump($id);\n-    $biography = $em->getRepository(Biography::class)->find($id);\n+    $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n-    if (!$biography) {\n-        return $this->json(['error' => 'Biography not found'], Response::HTTP_NOT_FOUND);\n-    }\n-\n-    $deserializedBiography = $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n+    // Deserialize the request content and merge changes into the existing entity\n+    $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n         AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     ]);\n \n     $em->flush();\n \n-    return $this->json($deserializedBiography, Response::HTTP_OK, [], ['groups' => 'read:biography']);\n+    return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n \n     /**\n      * @Route(\"/api/biography/{id}\", name=\"app_get_biography\", methods={\"GET\"})\n"
+                },
+                {
+                    "date": 1692348366506,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -65,8 +65,9 @@\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n+    $data = \n     $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n     // Deserialize the request content and merge changes into the existing entity\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n"
+                },
+                {
+                    "date": 1692348372427,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -65,9 +65,9 @@\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n-    $data = \n+    $data = json_encode()\n     $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n     // Deserialize the request content and merge changes into the existing entity\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n"
+                },
+                {
+                    "date": 1692348378365,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -65,9 +65,9 @@\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n-    $data = json_encode()\n+    $data = json_encode($request->get)\n     $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n     // Deserialize the request content and merge changes into the existing entity\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n"
+                },
+                {
+                    "date": 1692348383866,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -65,9 +65,9 @@\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n-    $data = json_encode($request->get)\n+    $data = json_encode($request->getContent())\n     $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n     // Deserialize the request content and merge changes into the existing entity\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n"
+                },
+                {
+                    "date": 1692348393486,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -65,9 +65,10 @@\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n-    $data = json_encode($request->getContent())\n+    $data = json_encode($request->getContent());\n+    \n     $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n     // Deserialize the request content and merge changes into the existing entity\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n"
+                },
+                {
+                    "date": 1692348400388,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,8 +74,9 @@\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n         AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     ]);\n \n+    \n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692348405632,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,9 +74,9 @@\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n         AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     ]);\n \n-    \n+    $biography= \n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692348411051,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,9 +74,9 @@\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n         AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     ]);\n \n-    $biography= \n+    $biography= new Bioga\n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692348417683,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,9 +74,9 @@\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n         AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     ]);\n \n-    $biography= new Bioga\n+    $biography= new Biography()\n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692348425243,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -67,16 +67,16 @@\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n     $data = json_encode($request->getContent());\n     \n-    $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n+    // $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n-    // Deserialize the request content and merge changes into the existing entity\n-    $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n-        AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n-    ]);\n+    // // Deserialize the request content and merge changes into the existing entity\n+    // $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n+    //     AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n+    // ]);\n \n-    $biography= new Biography()\n+    $biography= new Biography();\n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692348430519,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -75,8 +75,9 @@\n     //     AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     // ]);\n \n     $biography= new Biography();\n+    $\n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692348444640,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -75,9 +75,9 @@\n     //     AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     // ]);\n \n     $biography= new Biography();\n-    $\n+    $biography-\n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692348458016,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -75,9 +75,9 @@\n     //     AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     // ]);\n \n     $biography= new Biography();\n-    $biography-\n+    $biography->setName\n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692348466354,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -75,9 +75,9 @@\n     //     AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     // ]);\n \n     $biography= new Biography();\n-    $biography->setName\n+    $biography->setName($data);\n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692348474239,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -75,9 +75,9 @@\n     //     AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     // ]);\n \n     $biography= new Biography();\n-    $biography->setName($data);\n+    $biography->setName($data['name']);\n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692348481149,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,9 @@\n \n     $biography= new Biography();\n     $biography->setName($data['name']);\n     $em->flush();\n+    $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n \n"
+                },
+                {
+                    "date": 1692348488945,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -76,10 +76,10 @@\n     // ]);\n \n     $biography= new Biography();\n     $biography->setName($data['name']);\n+    $em->persist();\n     $em->flush();\n-    $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n \n"
+                },
+                {
+                    "date": 1692348494307,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -76,9 +76,9 @@\n     // ]);\n \n     $biography= new Biography();\n     $biography->setName($data['name']);\n-    $em->persist();\n+    $em->persist($biography);\n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n }\n"
+                },
+                {
+                    "date": 1692350306034,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -67,14 +67,14 @@\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n     $data = json_encode($request->getContent());\n     \n-    // $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n+    $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n-    // // Deserialize the request content and merge changes into the existing entity\n-    // $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n-    //     AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n-    // ]);\n+    // Deserialize the request content and merge changes into the existing entity\n+    $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n+        AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n+    ]);\n \n     $biography= new Biography();\n     $biography->setName($data['name']);\n     $em->persist($biography);\n"
+                },
+                {
+                    "date": 1692350315835,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -65,19 +65,17 @@\n  * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n  */\n public function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n {\n-    $data = json_encode($request->getContent());\n-    \n+     \n     $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n     // Deserialize the request content and merge changes into the existing entity\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n         AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     ]);\n \n-    $biography= new Biography();\n-    $biography->setName($data['name']);\n+   \n     $em->persist($biography);\n     $em->flush();\n \n     return $this->json($biography, 200, [], ['groups' => 'read:biography']);\n"
+                },
+                {
+                    "date": 1692696553425,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -68,8 +68,10 @@\n {\n      \n     $biography = $em->getRepository(Biography::class)->findOneBy([\"id\" => $id]);\n \n+    \n+\n     // Deserialize the request content and merge changes into the existing entity\n     $serializer->deserialize($request->getContent(), Biography::class, 'json', [\n         AbstractNormalizer::OBJECT_TO_POPULATE => $biography,\n     ]);\n"
+                }
+            ],
+            "date": 1692175807667,
+            "name": "Commit-0",
+            "content": "<?php\n\nnamespace App\\Controller;\n\nuse Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController;\nuse Symfony\\Component\\HttpFoundation\\Response;\nuse Symfony\\Component\\Routing\\Annotation\\Route;\nuse App\\Entity\\Biography;\nuse Doctrine\\ORM\\EntityManagerInterface;\nuse Symfony\\Component\\HttpFoundation\\JsonResponse;\nuse Symfony\\Component\\HttpFoundation\\Request;\nuse Symfony\\Component\\PasswordHasher\\Hasher\\UserPasswordHasherInterface;\nuse Symfony\\Component\\Serializer\\Normalizer\\AbstractNormalizer;\nuse Symfony\\Component\\Serializer\\SerializerInterface;\n\nclass BiographyController extends AbstractController\n{\n    /**\n     * @Route(\"/biography\", name=\"app_biography\")\n     */\n    public function index(): Response\n    {\n        return $this->render('biography/index.html.twig', [\n            'controller_name' => 'BiographyController',\n        ]);\n    }\n\n     /**\n     * @Route(\"/api/biography\", name=\"app_create_biography\", methods={\"POST\"})\n     */\n    public function create(Request $request ,EntityManagerInterface $em ,SerializerInterface $serializer): Response\n    {\n\n        // Désérialiser l'objet Entreprise à partir des données JSON\n        $object = $serializer->deserialize($request->getContent(), Biography::class, 'json');\n        //$object->setStatus(false);\n        // Persister l'objet Entreprise et les utilisateurs\n        $em->persist($object);\n        $em-> flush();\n        return $this->json(\"success\", JsonResponse::HTTP_OK);\n    }\n\n    /**\n     * @Route(\"/api/biographies\", name=\"app_get_all_biography\", methods={\"GET\"})\n     */\n    public function getAllBiographies(Request $request, EntityManagerInterface $em): Response\n    {\n        $find = $em->getRepository(Biography::class)->findAll();\n        return $this->json($find,200);\n    }\n\n    /**\n * @Route(\"/api/biography/{id}\", name=\"app_edit_biography\", methods={\"PUT\"})\n */\npublic function editBiography($id, Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response\n{\n    $biography = $em->getRepository(Biography::class)->find($id); // Utilisez find() au lieu de findOneBy()\n    \n    if (!$biography) {\n        throw $this->createNotFoundException('Biography not found');\n    }\n\n    $biography2 = $serializer->deserialize($request->getContent(), \n            Biography::class, \n            'json',\n            [\n                'object_to_populate' => $biography\n            ] \n            );\n\n    $em->flush();\n    return $this->json($biography2, 200, [], ['groups' => 'read:biography']);\n}\n\n    /**\n     * @Route(\"/api/biography/{id}\", name=\"app_get_biography\", methods={\"GET\"})\n     */\n    public function getBiography($id, Request $request, EntityManagerInterface $em): Response\n    {\n        $biography = $em->getRepository(Biography::class)->findOneBy([\"id\"=>$id]);\n        return $this->json($biography,200);\n\n    }\n\n\n    /**\n     * @Route(\"/api/biography/{id}\", name=\"app_delete_biography\", methods={\"DELETE\"})\n     */\n    public function deleteBiography($id, Request $request, EntityManagerInterface $em): Response\n    {\n        $biography = $em->getRepository(Biography::class)->findOneBy([\"id\"=>$id]);\n        $em->remove($biography);\n        $em->flush();\n        return $this->json(\"success\", JsonResponse::HTTP_OK);\n\n    }\n}"
+        }
+    ]
+}

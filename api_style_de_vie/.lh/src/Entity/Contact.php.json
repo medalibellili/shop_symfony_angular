@@ -1,0 +1,114 @@
+{
+    "sourceFile": "src/Entity/Contact.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 24,
+            "patches": [
+                {
+                    "date": 1694686057492,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1694686077441,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n     /**\n      * @ORM\\Id\n      * @ORM\\GeneratedValue\n      * @ORM\\Column(type=\"integer\")\n-     * , \"read:notification\"\n+     * @Groups({\"read:user\",\"write:entreprise\",\"read:entreprise\", \"read:product\", \"read:notification\"})\n      */\n     private $id;\n \n     /**\n"
+                },
+                {
+                    "date": 1694686091815,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,14 +15,15 @@\n     /**\n      * @ORM\\Id\n      * @ORM\\GeneratedValue\n      * @ORM\\Column(type=\"integer\")\n-     * @Groups({\"read:user\",\"write:entreprise\",\"read:entreprise\", \"read:product\", \"read:notification\"})\n+     * @Groups({\"read:notification\"})\n      */\n     private $id;\n \n     /**\n      * @ORM\\Column(type=\"string\", length=255)\n+     * \n      */\n     private $name;\n \n     /**\n"
+                },
+                {
+                    "date": 1694686098021,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n     private $id;\n \n     /**\n      * @ORM\\Column(type=\"string\", length=255)\n-     * \n+     * @Groups({\"read:notification\"})\n      */\n     private $name;\n \n     /**\n"
+                },
+                {
+                    "date": 1694686126831,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,9 @@\n use App\\Repository\\ContactRepository;\n use Doctrine\\Common\\Collections\\ArrayCollection;\n use Doctrine\\Common\\Collections\\Collection;\n use Doctrine\\ORM\\Mapping as ORM;\n+use Symfony\\Component\\Serializer\\Annotation\\Groups;\n \n /**\n  * @ORM\\Entity(repositoryClass=ContactRepository::class)\n  */\n"
+                },
+                {
+                    "date": 1694688338629,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -58,9 +58,9 @@\n      */\n     private $notification;\n \n     /**\n-     * @ORM\\OneToMany(targetEntity=Notification::class, mappedBy=\"idContact\")\n+     * @ORM\\OneToMany(targetEntity=Notification::class, mappedBy=\"ontact\")\n      */\n     private $notifications;\n \n     public function __construct()\n"
+                },
+                {
+                    "date": 1694688379138,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -57,12 +57,9 @@\n      * @ORM\\Column(type=\"boolean\")\n      */\n     private $notification;\n \n-    /**\n-     * @ORM\\OneToMany(targetEntity=Notification::class, mappedBy=\"ontact\")\n-     */\n-    private $notifications;\n+    \n \n     public function __construct()\n     {\n         $this->notifications = new ArrayCollection();\n"
+                },
+                {
+                    "date": 1694688434683,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,12 +52,9 @@\n      * @ORM\\Column(type=\"boolean\")\n      */\n     private $status;\n \n-    /**\n-     * @ORM\\Column(type=\"boolean\")\n-     */\n-    private $notification;\n+     \n \n     \n \n     public function __construct()\n"
+                },
+                {
+                    "date": 1694688445182,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,12 +56,9 @@\n      \n \n     \n \n-    public function __construct()\n-    {\n-        $this->notifications = new ArrayCollection();\n-    }\n+   \n \n     public function getId(): ?int\n     {\n         return $this->id;\n"
+                },
+                {
+                    "date": 1694688452626,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -135,20 +135,10 @@\n \n         return $this;\n     }\n \n-    public function isNotification(): ?bool\n-    {\n-        return $this->notification;\n-    }\n+    \n \n-    public function setNotification(bool $notification): self\n-    {\n-        $this->notification = $notification;\n-\n-        return $this;\n-    }\n-\n     /**\n      * @return Collection<int, Notification>\n      */\n     public function getNotifications(): Collection\n"
+                },
+                {
+                    "date": 1694688474569,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,9 +56,12 @@\n      \n \n     \n \n-   \n+    public function __construct()\n+    {\n+        $this->notifications = new ArrayCollection();\n+    }\n \n     public function getId(): ?int\n     {\n         return $this->id;\n@@ -135,10 +138,20 @@\n \n         return $this;\n     }\n \n-    \n+    public function isNotification(): ?bool\n+    {\n+        return $this->notification;\n+    }\n \n+    public function setNotification(bool $notification): self\n+    {\n+        $this->notification = $notification;\n+\n+        return $this;\n+    }\n+\n     /**\n      * @return Collection<int, Notification>\n      */\n     public function getNotifications(): Collection\n"
+                },
+                {
+                    "date": 1694688485984,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,13 +56,9 @@\n      \n \n     \n \n-    public function __construct()\n-    {\n-        $this->notifications = new ArrayCollection();\n-    }\n-\n+     \n     public function getId(): ?int\n     {\n         return $this->id;\n     }\n"
+                },
+                {
+                    "date": 1694688492479,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -134,20 +134,9 @@\n \n         return $this;\n     }\n \n-    public function isNotification(): ?bool\n-    {\n-        return $this->notification;\n-    }\n-\n-    public function setNotification(bool $notification): self\n-    {\n-        $this->notification = $notification;\n-\n-        return $this;\n-    }\n-\n+    \n     /**\n      * @return Collection<int, Notification>\n      */\n     public function getNotifications(): Collection\n"
+                },
+                {
+                    "date": 1694688504063,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -134,9 +134,20 @@\n \n         return $this;\n     }\n \n-    \n+    public function isNotification(): ?bool\n+    {\n+        return $this->notification;\n+    }\n+\n+    public function setNotification(bool $notification): self\n+    {\n+        $this->notification = $notification;\n+\n+        return $this;\n+    }\n+\n     /**\n      * @return Collection<int, Notification>\n      */\n     public function getNotifications(): Collection\n"
+                },
+                {
+                    "date": 1694688510843,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,9 +56,13 @@\n      \n \n     \n \n-     \n+    public function __construct()\n+    {\n+        $this->notifications = new ArrayCollection();\n+    }\n+\n     public function getId(): ?int\n     {\n         return $this->id;\n     }\n"
+                },
+                {
+                    "date": 1694688527253,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -143,23 +143,10 @@\n     {\n         return $this->notification;\n     }\n \n-    public function setNotification(bool $notification): self\n-    {\n-        $this->notification = $notification;\n+    \n \n-        return $this;\n-    }\n-\n-    /**\n-     * @return Collection<int, Notification>\n-     */\n-    public function getNotifications(): Collection\n-    {\n-        return $this->notifications;\n-    }\n-\n     public function addNotification(Notification $notification): self\n     {\n         if (!$this->notifications->contains($notification)) {\n             $this->notifications[] = $notification;\n"
+                },
+                {
+                    "date": 1694688544214,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -145,18 +145,10 @@\n     }\n \n     \n \n-    public function addNotification(Notification $notification): self\n-    {\n-        if (!$this->notifications->contains($notification)) {\n-            $this->notifications[] = $notification;\n-            $notification->setIdContact($this);\n-        }\n+   \n \n-        return $this;\n-    }\n-\n     public function removeNotification(Notification $notification): self\n     {\n         if ($this->notifications->removeElement($notification)) {\n             // set the owning side to null (unless already changed)\n"
+                },
+                {
+                    "date": 1694688554324,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,12 +56,9 @@\n      \n \n     \n \n-    public function __construct()\n-    {\n-        $this->notifications = new ArrayCollection();\n-    }\n+   \n \n     public function getId(): ?int\n     {\n         return $this->id;\n@@ -138,25 +135,12 @@\n \n         return $this;\n     }\n \n-    public function isNotification(): ?bool\n-    {\n-        return $this->notification;\n-    }\n+    \n \n     \n \n    \n \n-    public function removeNotification(Notification $notification): self\n-    {\n-        if ($this->notifications->removeElement($notification)) {\n-            // set the owning side to null (unless already changed)\n-            if ($notification->getIdContact() === $this) {\n-                $notification->setIdContact(null);\n-            }\n-        }\n-\n-        return $this;\n-    }\n+    \n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1694691369230,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,9 +56,12 @@\n      \n \n     \n \n-   \n+    public function __construct()\n+    {\n+        $this->notifications = new ArrayCollection();\n+    }\n \n     public function getId(): ?int\n     {\n         return $this->id;\n"
+                },
+                {
+                    "date": 1694691374439,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -138,12 +138,46 @@\n \n         return $this;\n     }\n \n-    \n+    public function isNotification(): ?bool\n+    {\n+        return $this->notification;\n+    }\n \n-    \n+    public function setNotification(bool $notification): self\n+    {\n+        $this->notification = $notification;\n \n-   \n+        return $this;\n+    }\n \n-    \n+    /**\n+     * @return Collection<int, Notification>\n+     */\n+    public function getNotifications(): Collection\n+    {\n+        return $this->notifications;\n+    }\n+\n+    public function addNotification(Notification $notification): self\n+    {\n+        if (!$this->notifications->contains($notification)) {\n+            $this->notifications[] = $notification;\n+            $notification->setIdContact($this);\n+        }\n+\n+        return $this;\n+    }\n+\n+    public function removeNotification(Notification $notification): self\n+    {\n+        if ($this->notifications->removeElement($notification)) {\n+            // set the owning side to null (unless already changed)\n+            if ($notification->getIdContact() === $this) {\n+                $notification->setIdContact(null);\n+            }\n+        }\n+\n+        return $this;\n+    }\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1694691382559,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -52,11 +52,17 @@\n      * @ORM\\Column(type=\"boolean\")\n      */\n     private $status;\n \n-     \n+    /**\n+     * @ORM\\Column(type=\"boolean\")\n+     */\n+    private $notification;\n \n-    \n+    /**\n+     * @ORM\\OneToMany(targetEntity=Notification::class, mappedBy=\"contact\")\n+     */\n+    private $notifications;\n \n     public function __construct()\n     {\n         $this->notifications = new ArrayCollection();\n"
+                },
+                {
+                    "date": 1694691387924,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -58,9 +58,9 @@\n      */\n     private $notification;\n \n     /**\n-     * @ORM\\OneToMany(targetEntity=Notification::class, mappedBy=\"contact\")\n+     * @ORM\\OneToMany(targetEntity=Notification::class, mappedBy=\"ontact\")\n      */\n     private $notifications;\n \n     public function __construct()\n"
+                },
+                {
+                    "date": 1694691394508,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -51,19 +51,10 @@\n     /**\n      * @ORM\\Column(type=\"boolean\")\n      */\n     private $status;\n+ \n \n-    /**\n-     * @ORM\\Column(type=\"boolean\")\n-     */\n-    private $notification;\n-\n-    /**\n-     * @ORM\\OneToMany(targetEntity=Notification::class, mappedBy=\"ontact\")\n-     */\n-    private $notifications;\n-\n     public function __construct()\n     {\n         $this->notifications = new ArrayCollection();\n     }\n"
+                },
+                {
+                    "date": 1694691401683,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -53,12 +53,9 @@\n      */\n     private $status;\n  \n \n-    public function __construct()\n-    {\n-        $this->notifications = new ArrayCollection();\n-    }\n+   \n \n     public function getId(): ?int\n     {\n         return $this->id;\n@@ -135,20 +132,10 @@\n \n         return $this;\n     }\n \n-    public function isNotification(): ?bool\n-    {\n-        return $this->notification;\n-    }\n+  \n \n-    public function setNotification(bool $notification): self\n-    {\n-        $this->notification = $notification;\n-\n-        return $this;\n-    }\n-\n     /**\n      * @return Collection<int, Notification>\n      */\n     public function getNotifications(): Collection\n"
+                },
+                {
+                    "date": 1694691407899,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -134,34 +134,8 @@\n     }\n \n   \n \n-    /**\n-     * @return Collection<int, Notification>\n-     */\n-    public function getNotifications(): Collection\n-    {\n-        return $this->notifications;\n-    }\n+  \n \n-    public function addNotification(Notification $notification): self\n-    {\n-        if (!$this->notifications->contains($notification)) {\n-            $this->notifications[] = $notification;\n-            $notification->setIdContact($this);\n-        }\n-\n-        return $this;\n-    }\n-\n-    public function removeNotification(Notification $notification): self\n-    {\n-        if ($this->notifications->removeElement($notification)) {\n-            // set the owning side to null (unless already changed)\n-            if ($notification->getIdContact() === $this) {\n-                $notification->setIdContact(null);\n-            }\n-        }\n-\n-        return $this;\n-    }\n+    \n }\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1694686057492,
+            "name": "Commit-0",
+            "content": "<?php\n\nnamespace App\\Entity;\n\nuse App\\Repository\\ContactRepository;\nuse Doctrine\\Common\\Collections\\ArrayCollection;\nuse Doctrine\\Common\\Collections\\Collection;\nuse Doctrine\\ORM\\Mapping as ORM;\n\n/**\n * @ORM\\Entity(repositoryClass=ContactRepository::class)\n */\nclass Contact\n{\n    /**\n     * @ORM\\Id\n     * @ORM\\GeneratedValue\n     * @ORM\\Column(type=\"integer\")\n     * , \"read:notification\"\n     */\n    private $id;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     */\n    private $name;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     */\n    private $email;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     */\n    private $subject;\n\n    /**\n     * @ORM\\Column(type=\"string\", length=255)\n     */\n    private $message;\n\n\n    /**\n     * @ORM\\Column(type=\"datetime\", nullable=true)\n     */\n    private $createdAt;\n\n    /**\n     * @ORM\\Column(type=\"boolean\")\n     */\n    private $status;\n\n    /**\n     * @ORM\\Column(type=\"boolean\")\n     */\n    private $notification;\n\n    /**\n     * @ORM\\OneToMany(targetEntity=Notification::class, mappedBy=\"idContact\")\n     */\n    private $notifications;\n\n    public function __construct()\n    {\n        $this->notifications = new ArrayCollection();\n    }\n\n    public function getId(): ?int\n    {\n        return $this->id;\n    }\n\n    public function getName(): ?string\n    {\n        return $this->name;\n    }\n\n    public function setName(string $name): self\n    {\n        $this->name = $name;\n\n        return $this;\n    }\n\n    public function getEmail(): ?string\n    {\n        return $this->email;\n    }\n\n    public function setEmail(string $email): self\n    {\n        $this->email = $email;\n\n        return $this;\n    }\n\n    public function getSubject(): ?string\n    {\n        return $this->subject;\n    }\n\n    public function setSubject(string $subject): self\n    {\n        $this->subject = $subject;\n\n        return $this;\n    }\n\n    public function getMessage(): ?string\n    {\n        return $this->message;\n    }\n\n    public function setMessage(string $message): self\n    {\n        $this->message = $message;\n\n        return $this;\n    }\n\n    public function getCreatedAt(): ?\\DateTimeInterface\n    {\n        return $this->createdAt;\n    }\n\n    public function setCreatedAt(\\DateTimeInterface $createdAt): self\n    {\n        $this->createdAt = $createdAt;\n\n        return $this;\n    }\n\n    public function isStatus(): ?bool\n    {\n        return $this->status;\n    }\n\n    public function setStatus(bool $status): self\n    {\n        $this->status = $status;\n\n        return $this;\n    }\n\n    public function isNotification(): ?bool\n    {\n        return $this->notification;\n    }\n\n    public function setNotification(bool $notification): self\n    {\n        $this->notification = $notification;\n\n        return $this;\n    }\n\n    /**\n     * @return Collection<int, Notification>\n     */\n    public function getNotifications(): Collection\n    {\n        return $this->notifications;\n    }\n\n    public function addNotification(Notification $notification): self\n    {\n        if (!$this->notifications->contains($notification)) {\n            $this->notifications[] = $notification;\n            $notification->setIdContact($this);\n        }\n\n        return $this;\n    }\n\n    public function removeNotification(Notification $notification): self\n    {\n        if ($this->notifications->removeElement($notification)) {\n            // set the owning side to null (unless already changed)\n            if ($notification->getIdContact() === $this) {\n                $notification->setIdContact(null);\n            }\n        }\n\n        return $this;\n    }\n}"
+        }
+    ]
+}

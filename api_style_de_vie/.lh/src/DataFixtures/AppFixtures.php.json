@@ -1,0 +1,42 @@
+{
+    "sourceFile": "src/DataFixtures/AppFixtures.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 6,
+            "patches": [
+                {
+                    "date": 1692777536068,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1692777541477,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -30,9 +30,9 @@\n         $manager->persist($user);\n         \n         // Création d'un user admin\n         $userAdmin = new User();\n-        $userAdmin->setEmail(\"admine@bookapi.com\");\n+        $userAdmin->setEmail(\"admin1@bookapi.com\");\n         $userAdmin->setRoles([\"ROLE_ADMIN\"]);\n         $userAdmin->setToken(\"abcdefghijk\");\n         $userAdmin->setCivility(\"Madame\");\n         $userAdmin->setTel(555555);\n"
+                },
+                {
+                    "date": 1693208119166,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n     {\n         // $product = new Product();\n         // $manager->persist($product);\n         $user = new User();\n-        $user->setEmail(\"user1@bookapi.com\");\n+        $user->setEmail(\"user@bookapi.com\");\n         $user->setRoles([\"ROLE_USER\"]);\n         $user->setToken(\"abcdefghijk\");\n         $user->setCivility(\"Madame\");\n         $user->setTel(555555);\n"
+                },
+                {
+                    "date": 1693208143919,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n     {\n         // $product = new Product();\n         // $manager->persist($product);\n         $user = new User();\n-        $user->setEmail(\"user@bookapi.com\");\n+        $user->setEmail(\"user10@bookapi.com\");\n         $user->setRoles([\"ROLE_USER\"]);\n         $user->setToken(\"abcdefghijk\");\n         $user->setCivility(\"Madame\");\n         $user->setTel(555555);\n@@ -30,14 +30,15 @@\n         $manager->persist($user);\n         \n         // Création d'un user admin\n         $userAdmin = new User();\n-        $userAdmin->setEmail(\"admin1@bookapi.com\");\n+        $userAdmin->setEmail(\"admin10@bookapi.com\");\n         $userAdmin->setRoles([\"ROLE_ADMIN\"]);\n         $userAdmin->setToken(\"abcdefghijk\");\n         $userAdmin->setCivility(\"Madame\");\n         $userAdmin->setTel(555555);\n         $userAdmin->setNomComplet(\"Madame\");\n+        $userAdmin->setNomComplet(\"Madame\");\n \n \n         $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, \"password\"));\n         $manager->persist($userAdmin);\n"
+                },
+                {
+                    "date": 1693208155144,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,9 +36,9 @@\n         $userAdmin->setToken(\"abcdefghijk\");\n         $userAdmin->setCivility(\"Madame\");\n         $userAdmin->setTel(555555);\n         $userAdmin->setNomComplet(\"Madame\");\n-        $userAdmin->setNomComplet(\"Madame\");\n+        $userAdmin->setFirstActive(\"Madame\");\n \n \n         $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, \"password\"));\n         $manager->persist($userAdmin);\n"
+                },
+                {
+                    "date": 1693208161448,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,9 +36,9 @@\n         $userAdmin->setToken(\"abcdefghijk\");\n         $userAdmin->setCivility(\"Madame\");\n         $userAdmin->setTel(555555);\n         $userAdmin->setNomComplet(\"Madame\");\n-        $userAdmin->setFirstActive(\"Madame\");\n+        $userAdmin->setFirstActive();\n \n \n         $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, \"password\"));\n         $manager->persist($userAdmin);\n"
+                },
+                {
+                    "date": 1693208177433,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,8 +26,10 @@\n         $user->setCivility(\"Madame\");\n         $user->setTel(555555);\n         $user->setNomComplet(\"Madame\");\n         $user->setPassword($this->userPasswordHasher->hashPassword($user, \"password\"));\n+        $userAdmin->setFirstActive(true);\n+\n         $manager->persist($user);\n         \n         // Création d'un user admin\n         $userAdmin = new User();\n@@ -36,9 +38,9 @@\n         $userAdmin->setToken(\"abcdefghijk\");\n         $userAdmin->setCivility(\"Madame\");\n         $userAdmin->setTel(555555);\n         $userAdmin->setNomComplet(\"Madame\");\n-        $userAdmin->setFirstActive();\n+        $userAdmin->setFirstActive(true);\n \n \n         $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, \"password\"));\n         $manager->persist($userAdmin);\n"
+                }
+            ],
+            "date": 1692777536068,
+            "name": "Commit-0",
+            "content": "<?php\n\nnamespace App\\DataFixtures;\n\nuse Doctrine\\Bundle\\FixturesBundle\\Fixture;\nuse Doctrine\\Persistence\\ObjectManager;\nuse Symfony\\Component\\PasswordHasher\\Hasher\\UserPasswordHasherInterface;\nuse App\\Entity\\User;\n\n\nclass AppFixtures extends Fixture\n{\n    private $userPasswordHasher;\n    public function __construct(UserPasswordHasherInterface $userPasswordHasher)\n    {\n        $this->userPasswordHasher = $userPasswordHasher;\n    }\n    public function load(ObjectManager $manager): void\n    {\n        // $product = new Product();\n        // $manager->persist($product);\n        $user = new User();\n        $user->setEmail(\"user1@bookapi.com\");\n        $user->setRoles([\"ROLE_USER\"]);\n        $user->setToken(\"abcdefghijk\");\n        $user->setCivility(\"Madame\");\n        $user->setTel(555555);\n        $user->setNomComplet(\"Madame\");\n        $user->setPassword($this->userPasswordHasher->hashPassword($user, \"password\"));\n        $manager->persist($user);\n        \n        // Création d'un user admin\n        $userAdmin = new User();\n        $userAdmin->setEmail(\"admine@bookapi.com\");\n        $userAdmin->setRoles([\"ROLE_ADMIN\"]);\n        $userAdmin->setToken(\"abcdefghijk\");\n        $userAdmin->setCivility(\"Madame\");\n        $userAdmin->setTel(555555);\n        $userAdmin->setNomComplet(\"Madame\");\n\n\n        $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, \"password\"));\n        $manager->persist($userAdmin);\n\n        $manager->flush();\n    }\n}"
+        }
+    ]
+}
